@@ -12,4 +12,22 @@ jobs:
             - name: Executing Shell Script
               run: |
                chmod +x ascii-script.sh 
-               ./ascii-script.sh         
+               ./ascii-script.sh
+            
+            - name: Upload Dragon Text File
+              uses: actions/upload-artifact@v3
+              with:
+                name: dragon-text-file
+                path: dragon.txt
+    
+    publish_job:
+        needs: ascii_job
+        runs-on: ubuntu-latest
+        steps:
+            - name: Download Dragon Text File
+              uses: actions/download-artifact@v3
+              with:
+                name: dragon-text-file
+            
+            - name: Test File Exists
+              run: grep -i "dragon" dragon.txt
